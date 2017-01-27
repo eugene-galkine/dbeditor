@@ -88,14 +88,14 @@ public class DBConnector
 		try
 		{
 			Statement stmt = conn.createStatement();
-			String qry = "";
-			if (person.getReportsTo() != -1)
-				qry = "INSERT INTO PROFILES (FIRST_NAME, LAST_NAME,";
-			else
-				qry = "";
+			String qry = "INSERT INTO PROFILES (FIRST_NAME,LAST_NAME" + 
+					((person.getReportsTo() != -1) ? ",REPORTS_TO" : "") +
+					((person.getEmail().length() > 0) ? ",EMAIL" : "") + ")" +
+					" VALUES ('" + person.getFName() + "','" + person.getLName() + "'" +
+					((person.getReportsTo() != -1) ? "," + person.getReportsTo() + "" : "") +
+					((person.getEmail().length() > 0) ? ",'" + person.getEmail() + "'" : "") + ");";
 			
-			if (!stmt.execute(qry))//TODO
-				System.out.println("Error inserting user into database");
+			stmt.execute(qry);
 		} catch (Exception e)
 		{
 			e.printStackTrace();
