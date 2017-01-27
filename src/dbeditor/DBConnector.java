@@ -7,8 +7,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+import javax.swing.JComboBox;
+
 public class DBConnector
 {
+	public static final DBConnector instance = new DBConnector();
+	
 	private String ip = "localhost";
 	private String user = "root";
 	private String password = "";
@@ -18,14 +22,14 @@ public class DBConnector
 	private Connection conn;
 	private Properties connectionProps;
 	
-	public DBConnector()
+	private DBConnector()
 	{
 	    connectionProps = new Properties();
 	    connectionProps.put("user", user);
 	    connectionProps.put("password", password);
 	}
 	
-	public boolean Connect()
+	private boolean connect()
 	{
 		try
 		{
@@ -44,18 +48,59 @@ public class DBConnector
 		return true;
 	}
 	
-	public void testQuery()
+	private void done()
 	{
 		try
 		{
+			conn.close();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void FillCombo(JComboBox<DBPerson> combo)
+	{
+		if (!connect())
+			return;
+		
+		try
+		{
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM PROFILES WHERE ID='1'");
-			if (rs.next())
-				System.out.println(rs.getString("FIRST_NAME"));
+			ResultSet rs = stmt.executeQuery("SELECT * FROM PROFILES WHERE EMAIL IS NOT NULL");
+			
+			while (rs.next())
+				combo.addItem(new DBPerson(rs.getString("FIRST_NAME"), rs.getString("LAST_NAME"), rs.getInt("ID")));
+				//System.out.println(rs.getString("FIRST_NAME"));
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
 		
+		done();
+	}
+	
+	public void AddPerson(DBPerson person)
+	{
+		if (!connect())
+			return;
+		
+		try
+		{
+			Statement stmt = conn.createStatement();
+			String qry = "";
+			if (person.getReportsTo() != -1)
+				qry = "INSERT INTO PROFILES (FIRST_NAME, LAST_NAME,";
+			else
+				qry = "";
+			
+			if (!stmt.execute(qry))//TODO
+				System.out.println("Error inserting user into database");
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		done();
 	}
 }

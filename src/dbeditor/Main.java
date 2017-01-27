@@ -4,11 +4,11 @@ import java.awt.EventQueue;
 
 public class Main
 {
+	
+	
 	public static void main(String[] args) 
 	{
-		DBConnector connector = new DBConnector();
-		connector.Connect();
-		connector.testQuery();
+		//System.out.println(new String(Base64.encode("Dylan,Lehotsky,1".getBytes())));
 		
 		EventQueue.invokeLater(new Runnable()
 		{
