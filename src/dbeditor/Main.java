@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 public class Main
 {
-	
+	private static MainView mv;
 	
 	public static void main(String[] args) 
 	{
@@ -16,8 +16,8 @@ public class Main
 			{
 				try
 				{
-					MainView frame = new MainView();
-					frame.setVisible(true);
+					mv = new MainView();
+					mv.setVisible(true);
 				} catch (Exception e)
 				{
 					e.printStackTrace();
@@ -26,5 +26,8 @@ public class Main
 		});
 	}
 
-	
+	public static MainView getMainView()
+	{
+		return mv;
+	}
 }

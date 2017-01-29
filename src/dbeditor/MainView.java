@@ -2,31 +2,29 @@ package dbeditor;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
-import java.awt.GridBagConstraints;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
 
-public class MainView extends JFrame
+public class MainView extends JFrame 
 {
 
 	/**
-	 * IDK what it means, but eclipse wants it
+	 * 
 	 */
-	private static final long serialVersionUID = 6250551778254283186L;
-
+	private static final long serialVersionUID = 325717971456310977L;
+	
 	private JPanel contentPane;
-	private JTextField fnameField;
-	private JTextField lnameField;
-	private JComboBox<DBPerson> reportsField;
-	private JLabel lblReportsTo;
-	private JLabel lblEmail;
-	private JTextField emailField;
-	private JButton btnAddToDatabase;
+	private JTable table;
+	private DefaultTableModel tableMod;
+	private JButton btnRemoveSelected;
+	private JButton btnEditSelected;
 
 	/**
 	 * Create the frame.
@@ -34,92 +32,129 @@ public class MainView extends JFrame
 	public MainView()
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 450);
+		setBounds(100, 100, 500, 352);
+		setTitle("Database Editor");
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		setTitle("Database Editor");
-		setResizable(false);
 		contentPane.setLayout(null);
 		
-		JLabel lblFirstName = new JLabel("First Name:");
-		GridBagConstraints gbc_lblFirstName = new GridBagConstraints();
-		lblFirstName.setBounds(10, 11, 79, 14);
-		contentPane.add(lblFirstName, gbc_lblFirstName);
+		tableMod = new DefaultTableModel(new Object[][] {},new String[] {"ID", "First Name", "Last Name", "Reports To", "Email"}) 
+		{
+			private static final long serialVersionUID = 4097999218204811939L;
+
+			public boolean isCellEditable(int row, int column) 
+			{
+				return false;
+			}
+		};
 		
-		fnameField = new JTextField();
-		GridBagConstraints gbc_fnameField = new GridBagConstraints();
-		fnameField.setBounds(85, 7, 200, 23);
-		contentPane.add(fnameField, gbc_fnameField);
-		fnameField.setColumns(10);
+		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(tableMod);
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(35);
+		table.getColumnModel().getColumn(0).setMinWidth(35);
+		table.getColumnModel().getColumn(0).setMaxWidth(35);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(3).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setMinWidth(32);
+		table.getColumnModel().getColumn(3).setMaxWidth(72);
+		table.getColumnModel().getColumn(4).setResizable(false);
+		table.getColumnModel().getColumn(4).setPreferredWidth(100);
 		
-		JLabel lblLastName = new JLabel("Last Name:");
-		GridBagConstraints gbc_lblLastName = new GridBagConstraints();
-		lblLastName.setBounds(295, 11, 79, 14);
-		contentPane.add(lblLastName, gbc_lblLastName);
 		
-		lnameField = new JTextField();
-		GridBagConstraints gbc_lnameField = new GridBagConstraints();
-		lnameField.setBounds(374, 7, 200, 23);
-		contentPane.add(lnameField, gbc_lnameField);
-		lnameField.setColumns(10);
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(0, 0, 494, 240);
+		contentPane.add(scrollPane);
 		
-		lblReportsTo = new JLabel("Reports to:");
-		GridBagConstraints gbc_lblReportsTo = new GridBagConstraints();
-		lblReportsTo.setBounds(10, 36, 71, 14);
-		contentPane.add(lblReportsTo, gbc_lblReportsTo);
-		
-		reportsField = new JComboBox<DBPerson>();
-		GridBagConstraints gbc_reportsField = new GridBagConstraints();
-		reportsField.setBounds(85, 32, 200, 23);
-		contentPane.add(reportsField, gbc_reportsField);
-		reportsField.addItem(new DBPerson("Null","",-1));
-		reportsField.setSelectedIndex(0);
-		
-		lblEmail = new JLabel("Email:");
-		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
-		lblEmail.setBounds(295, 36, 79, 14);
-		contentPane.add(lblEmail, gbc_lblEmail);
-		
-		emailField = new JTextField();
-		emailField.setToolTipText("If Reportable To");
-		GridBagConstraints gbc_emailField = new GridBagConstraints();
-		emailField.setBounds(374, 32, 200, 23);
-		contentPane.add(emailField, gbc_emailField);
-		emailField.setColumns(10);
-		
-		btnAddToDatabase = new JButton("Add To Database");
-		btnAddToDatabase.addActionListener(new ActionListener() 
+		JButton btnNewButton = new JButton("Add New Person");
+		btnNewButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				DBConnector.instance.AddPerson(
-						new DBPerson(fnameField.getText(), lnameField.getText(), 
-									emailField.getText(), ((DBPerson)reportsField.getSelectedItem()).getID()));
-				populateDropDown();
+				try
+				{
+					EditAddView frame = new EditAddView();
+					frame.setVisible(true);
+				} catch (Exception e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 		});
-		GridBagConstraints gbc_btnAddToDatabase = new GridBagConstraints();
-		btnAddToDatabase.setBounds(85, 78, 200, 23);
-		contentPane.add(btnAddToDatabase, gbc_btnAddToDatabase);
+		btnNewButton.setBounds(4, 244, 147, 23);
+		contentPane.add(btnNewButton);
 		
-		populateDropDown();
+		btnEditSelected = new JButton("Edit Selected");
+		btnEditSelected.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				try
+				{
+					DBPerson selected = getFromSelectedRow();
+					if (selected != null)
+					{
+						EditAddView frame = new EditAddView(selected);
+						frame.setVisible(true);
+					} else
+						System.out.println("No Row Selected!");
+				} catch (Exception e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEditSelected.setBounds(4, 270, 147, 23);
+		contentPane.add(btnEditSelected);
+		
+		btnRemoveSelected = new JButton("Remove Selected");
+		btnRemoveSelected.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				DBPerson selected = getFromSelectedRow();
+				if (selected != null)
+				{
+					DBConnector.instance.RemovePerson(selected);
+					refresh();
+				} else
+					System.out.println("No Row Selected!");
+			}
+		});
+		btnRemoveSelected.setBounds(4, 296, 147, 23);
+		contentPane.add(btnRemoveSelected);
+		
+		refresh();
 	}
 	
-	private void populateDropDown()
+	public void refresh()
 	{
-		reportsField.setSelectedIndex(0);
-		
-		while (reportsField.getItemCount() > 1)
-			reportsField.removeItemAt(1);
+		while (tableMod.getRowCount() > 0)
+			tableMod.removeRow(0);
 		
 		new Thread()
 		{
 			@Override
 			public void run()
 			{
-				DBConnector.instance.FillCombo(reportsField);
+				DBConnector.instance.FillTable(tableMod);
 			}
 		}.start();
+	}
+	
+	private DBPerson getFromSelectedRow()
+	{
+		return table.getSelectedRow() != -1 ? new DBPerson(
+				(int)tableMod.getValueAt(table.getSelectedRow(), 0), 
+				(String)tableMod.getValueAt(table.getSelectedRow(), 1), 
+				(String)tableMod.getValueAt(table.getSelectedRow(), 2), 
+				(tableMod.getValueAt(table.getSelectedRow(), 3) instanceof String) ? -1 : (int)tableMod.getValueAt(table.getSelectedRow(), 3),
+				(String)tableMod.getValueAt(table.getSelectedRow(), 4)) : 
+				null;
 	}
 }

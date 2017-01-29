@@ -20,6 +20,15 @@ public class DBPerson
 		this.reportsTo = ReportsTo;
 	}
 	
+	public DBPerson(int id, String fname, String lname, int reportsTo, String email)
+	{
+		this.id = id;
+		this.fname = fname;
+		this.lname = lname;
+		this.reportsTo = reportsTo;
+		this.email = email;
+	}
+	
 	@Override
 	public String toString()
 	{
