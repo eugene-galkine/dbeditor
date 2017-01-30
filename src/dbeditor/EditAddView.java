@@ -13,10 +13,6 @@ import javax.swing.JComboBox;
 
 public class EditAddView extends JFrame
 {
-
-	/**
-	 * IDK what it means, but eclipse wants it
-	 */
 	private static final long serialVersionUID = 6250551778254283186L;
 
 	private JPanel contentPane;
@@ -130,8 +126,10 @@ public class EditAddView extends JFrame
 							DBConnector.instance.AddPerson(
 									new DBPerson(fnameField.getText(), lnameField.getText(), 
 												emailField.getText(), ((DBPerson)reportsField.getSelectedItem()).getID()));
-						//populateDropDown();
-						Main.getMainView().refresh();
+						
+						
+						//QRCodeHandler.createQR(selected);
+						Main.getMainView().refreshAndQR();
 						dispose();
 					}
 				}.start();;
