@@ -155,6 +155,7 @@ public class EditAddView extends JFrame
 			public void run()
 			{
 				DBConnector.instance.FillCombo(reportsField);
+				//select the reports to person based on input dbperson
 				if (reportsTo != -1)
 				{
 					for (int i = 0; i < reportsField.getItemCount(); i++)

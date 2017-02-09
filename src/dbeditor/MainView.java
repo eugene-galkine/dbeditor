@@ -39,12 +39,15 @@ public class MainView extends JFrame
 	private JButton btnEditSelected;
 	private JButton btnMakeQR;
 	private JButton btnRefresh;
+	private String whereStmnt;
 
 	/**
 	 * Create the frame.
 	 */
 	public MainView()
 	{
+		whereStmnt = "";
+		
 		try
 		{
 			UIManager.setLookAndFeel(
@@ -134,7 +137,7 @@ public class MainView extends JFrame
 				if (selected != null)
 				{
 					DBConnector.instance.RemovePerson(selected);
-					refresh();
+					refresh(whereStmnt);
 				} else
 					noRowAlert();
 					//System.out.println("No Row Selected!");
@@ -201,12 +204,13 @@ public class MainView extends JFrame
 		gbc_btnMakeQR.gridy = 1;
 		contentPane.add(btnMakeQR, gbc_btnMakeQR);
 		
-		btnRefresh = new JButton("Refresh Table");
+		btnRefresh = new JButton("Filter Table");
 		btnRefresh.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				refresh();
+				FilterView frame = new FilterView();
+				frame.setVisible(true);
 			}
 		});
 		GridBagConstraints gbc_btnRefresh = new GridBagConstraints();
@@ -218,20 +222,22 @@ public class MainView extends JFrame
 		gbc_btnRefresh.gridy = 1;
 		contentPane.add(btnRefresh, gbc_btnRefresh);
 		
-		refresh();
+		refresh(whereStmnt);
 	}
 	
-	public void refresh()
+	public void refresh(String where)
 	{
 		while (tableMod.getRowCount() > 0)
 			tableMod.removeRow(0);
+		
+		whereStmnt = where;
 		
 		new Thread()
 		{
 			@Override
 			public void run()
 			{
-				DBConnector.instance.FillTable(tableMod);
+				DBConnector.instance.FillTable(tableMod, where);
 			}
 		}.start();
 	}
@@ -262,7 +268,7 @@ public class MainView extends JFrame
 			@Override
 			public void run()
 			{
-				DBConnector.instance.FillTable(tableMod);
+				DBConnector.instance.FillTable(tableMod, "");
 				QRCodeHandler.createQR(new DBPerson(
 						(int)tableMod.getValueAt(table.getRowCount() - 1, 0), 
 						(String)tableMod.getValueAt(table.getRowCount() - 1, 1), 

@@ -16,7 +16,7 @@ public class DBConnector
 	
 	private String ip = "localhost";
 	private String user = "root";
-	private String password = "";
+	private String password = "IHiw1aScYopVstpr";
 	private String dbname = "addtendance";
 	private int port = 3306;
 	
@@ -153,7 +153,7 @@ public class DBConnector
 		done();
 	}
 	
-	public void FillTable(DefaultTableModel model)
+	public void FillTable(DefaultTableModel model, String whereStatment)
 	{
 		if (!connect())
 			return;
@@ -161,7 +161,7 @@ public class DBConnector
 		try
 		{
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM PROFILES;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM PROFILES " + whereStatment + ";");
 			
 			while (rs.next())
 				model.addRow(new Object[]{rs.getInt("ID"),rs.getString("FIRST_NAME"),rs.getString("LAST_NAME"),rs.getInt("REPORTS_TO") == 0 ? "" : rs.getInt("REPORTS_TO"),rs.getString("EMAIL")});
