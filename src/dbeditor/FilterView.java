@@ -64,7 +64,7 @@ public class FilterView extends JFrame
 		gbc_comboBox.gridy = 0;
 		gbc_comboBox.gridx = 2;
 		contentPane.add(comboBox, gbc_comboBox);
-		comboBox.addItem(new DBPerson("Null","",-1));
+		comboBox.addItem(new DBPerson("","",-1));
 		comboBox.setSelectedIndex(0);
 		new Thread()
 		{
