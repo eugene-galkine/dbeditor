@@ -1,6 +1,6 @@
 package dbeditor;
 
-import java.io.File;
+/*import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,11 +12,11 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.sun.xml.internal.messaging.saaj.util.Base64;
+import com.sun.xml.internal.messaging.saaj.util.Base64;*/
 
 public class QRCodeHandler
 {
-	public static void createQR(DBPerson p)
+	/*public static void createQR(DBPerson p)
 	{
 		String qrCodeData = new String(Base64.encode((p.getFName() + "," + p.getLName() + "," + p.getID()).getBytes()));
 		String filePath = "QRCode.png";
@@ -47,5 +47,5 @@ public class QRCodeHandler
 		{
 			e.printStackTrace();
 		}
-	}
+	}*/
 }

@@ -9,8 +9,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -37,7 +35,7 @@ public class MainView extends JFrame
 	private JTable table;
 	private JButton btnRemoveSelected;
 	private JButton btnEditSelected;
-	private JButton btnMakeQR;
+	//private JButton btnMakeQR;
 	private JButton btnRefresh;
 	private String whereStmnt;
 
@@ -64,7 +62,7 @@ public class MainView extends JFrame
 		//setres
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.rowHeights = new int[] {200};
-		gbl_contentPane.columnWidths = new int[] {0, 0, 0, 0, 0};
+		gbl_contentPane.columnWidths = new int[] {0, 0, 0, 0};
 		contentPane = new JPanel(gbl_contentPane);
 		contentPane.setBorder(new EmptyBorder(3, 3, 3, 3));
 		setContentPane(contentPane);
@@ -87,7 +85,7 @@ public class MainView extends JFrame
 		JScrollPane scrollPane = new JScrollPane(table);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.gridwidth = 5;
+		gbc_scrollPane.gridwidth = 4;
 		gbc_scrollPane.weighty = 0.85;
 		gbc_scrollPane.weightx = 1.0;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
@@ -155,7 +153,7 @@ public class MainView extends JFrame
 		contentPane.add(btnRemoveSelected, gbc_btnRemoveSelected);
 		//contentPane.setLayout(gbl_contentPane);
 		
-		JButton btnNewButton = new JButton("Add New Person");
+		JButton btnNewButton = new JButton("Add New Row");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -181,7 +179,7 @@ public class MainView extends JFrame
 		gbc_btnNewButton.gridy = 1;
 		contentPane.add(btnNewButton, gbc_btnNewButton);
 		
-		btnMakeQR = new JButton("Generate QR");
+		/*btnMakeQR = new JButton("Generate QR");
 		btnMakeQR.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -202,7 +200,7 @@ public class MainView extends JFrame
 		gbc_btnMakeQR.weighty = 0.15;
 		gbc_btnMakeQR.gridx = 3;
 		gbc_btnMakeQR.gridy = 1;
-		contentPane.add(btnMakeQR, gbc_btnMakeQR);
+		contentPane.add(btnMakeQR, gbc_btnMakeQR);*/
 		
 		btnRefresh = new JButton("Filter Table");
 		btnRefresh.addActionListener(new ActionListener()
@@ -218,7 +216,7 @@ public class MainView extends JFrame
 		gbc_btnRefresh.weightx = 0.2;
 		gbc_btnRefresh.anchor = GridBagConstraints.WEST;
 		gbc_btnRefresh.fill = GridBagConstraints.BOTH;
-		gbc_btnRefresh.gridx = 4;
+		gbc_btnRefresh.gridx = 3;
 		gbc_btnRefresh.gridy = 1;
 		contentPane.add(btnRefresh, gbc_btnRefresh);
 		
@@ -269,12 +267,12 @@ public class MainView extends JFrame
 			public void run()
 			{
 				DBConnector.instance.FillTable(tableMod, "");
-				QRCodeHandler.createQR(new DBPerson(
+				/*QRCodeHandler.createQR(new DBPerson(
 						(int)tableMod.getValueAt(table.getRowCount() - 1, 0), 
 						(String)tableMod.getValueAt(table.getRowCount() - 1, 1), 
 						(String)tableMod.getValueAt(table.getRowCount() - 1, 2), 
 						(tableMod.getValueAt(table.getRowCount() - 1, 3) instanceof String) ? -1 : (int)tableMod.getValueAt(table.getRowCount() - 1, 3),
-						(String)tableMod.getValueAt(table.getRowCount() - 1, 4)));
+						(String)tableMod.getValueAt(table.getRowCount() - 1, 4)));*/
 			}
 		}.start();
 	}
